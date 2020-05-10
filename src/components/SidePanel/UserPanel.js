@@ -52,7 +52,7 @@ export class UserPanel extends Component {
           </Grid.Row>
 
           {/* User dropdown */}
-          <Header style={{ padding: '0.25em' }} as='h4' inverted>
+          <Header style={{ padding: '1.2em' }} as='h4' inverted>
             <Dropdown
               trigger={
                 <span>
