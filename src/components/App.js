@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import './App.css';
 
-import { conect, connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 import ColorPanel from './ColorPanel/ColorPanel';
 import SidePanel from './SidePanel/SidePanel';
@@ -23,6 +23,7 @@ function App({ currentUser, currentChannel }) {
           key={currentChannel && currentChannel.id}
           currentChannel={currentChannel}
           currentUser={currentUser}
+          className='messages__container'
         />
       </Grid.Column>
 
