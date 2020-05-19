@@ -9,9 +9,11 @@ import Message from './Message';
 export class Messages extends Component {
   state = {
     messagesRef: firebase.database().ref('messages'),
+    privateMessagesRef: firebase.database().ref('privateMessages'),
     messages: [],
     messagesLoading: true,
     channel: this.props.currentChannel,
+    privateChannel: this.props.isPrivateChannel,
     user: this.props.currentUser,
     numUniqueUsers: '',
     progressBar: false,
@@ -34,7 +36,9 @@ export class Messages extends Component {
 
   addMessageListener = (channelId) => {
     let loadedMessages = [];
-    this.state.messagesRef.child(channelId).on('child_added', (snap) => {
+    const ref = this.getMessagesRef();
+
+    ref.child(channelId).on('child_added', (snap) => {
       loadedMessages.push(snap.val());
       this.setState({
         messages: loadedMessages,
@@ -42,6 +46,11 @@ export class Messages extends Component {
       });
       this.countUniqueUsers(loadedMessages);
     });
+  };
+
+  getMessagesRef = () => {
+    const { messagesRef, privateMessagesRef, privateChannel } = this.state;
+    return privateChannel ? privateMessagesRef : messagesRef;
   };
 
   countUniqueUsers = (messages) => {
@@ -100,13 +109,18 @@ export class Messages extends Component {
     }
   };
 
-  displayChannelName = (channel) => (channel ? `#${channel.name}` : '');
+  displayChannelName = (channel) => {
+    return channel
+      ? `${this.state.isPrivateChannel ? '@' : '#'}${channel.name}`
+      : '';
+  };
 
   render() {
     const {
       messagesRef,
       messages,
       channel,
+      privateChannel,
       user,
       numUniqueUsers,
       progressBar,
@@ -119,6 +133,7 @@ export class Messages extends Component {
       <Fragment>
         <MessagesHeader
           channelName={this.displayChannelName(channel)}
+          isPrivateChannel={privateChannel}
           numUniqueUsers={numUniqueUsers}
           handleSearchChange={this.handleSearchChange}
           searchLoading={searchLoading}
@@ -137,8 +152,10 @@ export class Messages extends Component {
         <MessageForm
           messagesRef={messagesRef}
           currentChannel={channel}
+          isPrivateChannel={privateChannel}
           currentUser={user}
           isProgressBarVisible={this.isProgressBarVisible}
+          getMessagesRef={this.getMessagesRef}
         />
       </Fragment>
     );
