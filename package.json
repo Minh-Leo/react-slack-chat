@@ -11,7 +11,7 @@
     "firebase": "^7.14.2",
     "md5": "^2.2.1",
     "mime-types": "^2.1.27",
-    "moment": "^2.25.3",
+    "moment": "^2.29.4",
     "react": "^16.13.1",
     "react-avatar-editor": "^12.0.0-beta.0",
     "react-color": "^2.18.1",
